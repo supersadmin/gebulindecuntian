@@ -1,0 +1,51 @@
+{
+  "general": {
+    "designResolution": {
+      "width": 2160,
+      "height": 1080,
+      "fitHeight": true
+    }
+  },
+  "layer": [
+    {
+      "name": "canjin",
+      "value": 1
+    },
+    {
+      "name": "gudin",
+      "value": 2
+    }
+  ],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "guaiwu"
+      },
+      {
+        "index": 2,
+        "name": "guaiwuzidan"
+      },
+      {
+        "index": 3,
+        "name": "juese"
+      },
+      {
+        "index": 4,
+        "name": "juesezidan"
+      },
+      {
+        "index": 5,
+        "name": "zanai"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 1,
+      "1": 56,
+      "2": 8,
+      "3": 38,
+      "4": 2,
+      "5": 10
+    }
+  }
+}

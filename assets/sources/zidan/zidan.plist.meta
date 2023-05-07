@@ -1,0 +1,155 @@
+{
+  "ver": "1.0.7",
+  "importer": "sprite-atlas",
+  "imported": true,
+  "uuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {
+    "82828": {
+      "importer": "sprite-frame",
+      "uuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e@82828",
+      "displayName": "",
+      "id": "82828",
+      "name": "Ionic_Orb_C_84x84",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 0,
+        "trimY": 0,
+        "width": 84,
+        "height": 84,
+        "rawWidth": 84,
+        "rawHeight": 84,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "65d70f00-7b4b-474f-b346-1962d5b7b442@6c48a",
+        "atlasUuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e"
+      },
+      "ver": "1.0.11",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "220bd": {
+      "importer": "sprite-frame",
+      "uuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e@220bd",
+      "displayName": "",
+      "id": "220bd",
+      "name": "Ionic_Orb_D_84x84",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 84,
+        "trimY": 0,
+        "width": 84,
+        "height": 84,
+        "rawWidth": 84,
+        "rawHeight": 84,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "65d70f00-7b4b-474f-b346-1962d5b7b442@6c48a",
+        "atlasUuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e"
+      },
+      "ver": "1.0.11",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "b5e70": {
+      "importer": "sprite-frame",
+      "uuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e@b5e70",
+      "displayName": "",
+      "id": "b5e70",
+      "name": "Ionic_Orb_E_84x84",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 168,
+        "trimY": 0,
+        "width": 84,
+        "height": 84,
+        "rawWidth": 84,
+        "rawHeight": 84,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [],
+          "indexes": [],
+          "uv": [],
+          "nuv": [],
+          "minPos": [],
+          "maxPos": []
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "65d70f00-7b4b-474f-b346-1962d5b7b442@6c48a",
+        "atlasUuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e"
+      },
+      "ver": "1.0.11",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "atlasTextureName": "zidan.png",
+    "format": 3,
+    "uuid": "75a282db-439e-4554-b4cb-6e6c15b7dd2e",
+    "textureUuid": "65d70f00-7b4b-474f-b346-1962d5b7b442@6c48a"
+  }
+}
