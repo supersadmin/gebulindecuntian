@@ -7,7 +7,7 @@ const { ccclass, property } = _decorator;
 @ccclass('Attack')
 export class Attack extends Component {
 
-    _speed: number = 400
+    _speed: number = 800
     /**子弹飞行速度 */
     get speed() {
         return this._speed
@@ -43,7 +43,7 @@ export class Attack extends Component {
         this._lifeTime = val
     }
 
-    _attackInterval = 240
+    _attackInterval = 120
     /**攻击间隔 单位ms*/
     get attackInterval() {
         return this._attackInterval

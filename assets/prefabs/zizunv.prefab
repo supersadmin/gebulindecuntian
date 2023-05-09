@@ -34,10 +34,16 @@
       },
       {
         "__id__": 10
+      },
+      {
+        "__id__": 12
+      },
+      {
+        "__id__": 14
       }
     ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 16
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -80,7 +86,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
+      "width": 88,
       "height": 88
     },
     "_anchorPoint": {
@@ -116,7 +122,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "7020dc7d-da5c-407f-9862-a47ee872ba3d@98947",
+      "__uuid__": "e735fb06-4d82-4580-b929-2c75ce45ca02@98947",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -132,7 +138,7 @@
     "_isTrimmedMode": true,
     "_useGrayscale": false,
     "_atlas": {
-      "__uuid__": "7020dc7d-da5c-407f-9862-a47ee872ba3d",
+      "__uuid__": "e735fb06-4d82-4580-b929-2c75ce45ca02",
       "__expectedType__": "cc.SpriteAtlas"
     },
     "_id": ""
@@ -206,12 +212,12 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": -4,
+      "x": 0,
       "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 50,
+      "width": 56.7,
       "height": 80
     },
     "_id": ""
@@ -219,6 +225,51 @@
   {
     "__type__": "cc.CompPrefabInfo",
     "fileId": "d7GzAuor1HY6j3UQqc8Vgs"
+  },
+  {
+    "__type__": "d41e7UP+/ZHh46GQc03upJh",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 13
+    },
+    "manageNode": null,
+    "scale": 1,
+    "boxSpriteFrame": null,
+    "contextSpriteFrame": {
+      "__uuid__": "e735fb06-4d82-4580-b929-2c75ce45ca02@2e600",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "5bWWdJ/rtEKqt3nL3p5L8w"
+  },
+  {
+    "__type__": "b0303XgqMBE84HHUpbixO4K",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 15
+    },
+    "manageNode": null,
+    "interval": 1,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "5fdmvsbtJC/7bAhNoST9lV"
   },
   {
     "__type__": "cc.PrefabInfo",

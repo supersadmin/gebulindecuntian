@@ -1,6 +1,17 @@
 import { Component, _decorator, Sprite, Node,SpriteAtlas, Vec3, Animation } from "cc"
 import { directionIndex, computedDirection, getSpriteName } from "../other/getDirection"
 
+/**
+ * @param hp 当前血量
+ * @param newHp 要变化到的血量
+ */
+type fn1=(hp?:number,newHp?:number)=>void
+
+/**
+ * @param hp 当前血量
+ * @param oldHp 变化之前的血量
+ */
+type fn2=(hp?:number,oldHp?:number)=>void
 
 const { property } = _decorator;
 
@@ -11,7 +22,7 @@ const { property } = _decorator;
  */
 export class Role extends Component {
 
-  private _speed: number=200
+  private _speed: number=280
   /**移动速度 */
   get speed() {
     return this._speed
@@ -29,13 +40,21 @@ export class Role extends Component {
     this._maxHp = val
   }
 
+  /**监听生命值变化之前事件的函数列表*/
+  onHpChangeBeforeFn=new Set<fn1>()
+  /**监听生命值变化之后事件的函数列表*/
+  onHpChangeAfterFn=new Set<fn2>()
+
   private _hp: number=100
   /**当前生命值 */
   get hp() {
     return this._hp
   }
   set hp(val: number) {
+    this.onHpChangeBeforeFn.forEach(item=>item(this.hp,val))
+    const oldHp=this.hp
     this._hp = val
+    this.onHpChangeAfterFn.forEach(item=>item(this.hp,oldHp))
   }
 
   private _pr: number=5
@@ -82,18 +101,23 @@ export class Role extends Component {
 
   /**设置自身的动画组件,sprite组件以及图集列表 */
   start() {
+
     this.spriteAtlas = this.node.getComponent(Sprite).spriteAtlas
     this.animation = this.node.getComponent(Animation)
     this.sprite = this.node.getComponent(Sprite)
     this.beforeName = getSpriteName(this.sprite.spriteFrame.name)
+
   }
 
+  /**受到伤害之前执行的函数列表 */
+  onBeforeStrikeFn=new Set<(n:number)=>number>()
+  /**受到伤害之后执行的函数列表 */
+  onAfterStrikeFn=new Set<(n:number)=>void>()
   /**调用该函数进行扣血
     * 函数的返回值为最终扣除的血量
     */
   strike(damage: number) {
-
-
+    this.onBeforeStrikeFn.forEach(item=>damage=item(damage))
     if (damage <= this.pr) {
       damage = damage * 0.3
     } else {
@@ -106,10 +130,7 @@ export class Role extends Component {
     if (this.hp <= 0) {
       this.death()
     }
-
-    console.log(damage)
-
-
+    this.onAfterStrikeFn.forEach(item=>item(damage))
     return damage
   }
 
@@ -118,8 +139,11 @@ export class Role extends Component {
     this.unmount()
   }
 
+  /**监听角色节点销毁函数的集合 */
+  onUnmountBeforeFn=new Set<Function>()
   /**销毁所属节点 */
   unmount() {
+    this.onUnmountBeforeFn.forEach(item=>item())
     this.node.destroy()
   }
 

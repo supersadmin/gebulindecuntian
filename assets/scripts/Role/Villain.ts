@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, Contact2DType, Node,PhysicsSystem2D } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, Node,PhysicsSystem2D,find } from 'cc';
 import { Role } from './Role';
 import { GamePlayer } from './GamePlayer';
 import { ManageGame1 } from '../manage/ManageGame1';
@@ -9,9 +9,8 @@ const { ccclass, property } = _decorator;
 /**怪物类基类 */
 @ccclass('Villain')
 export class Villain extends Role {
-    
+
     /**统一管理节点与预制体等资源的组件 */
-    @property({ type: ManageGame1 })
     manageNode: ManageGame1 = null
     
     /**攻击的角色 */
@@ -24,6 +23,11 @@ export class Villain extends Role {
     colliderMap=new Map<Collider2D,Function>()
 
     start() {
+
+        this.hp=1000
+
+        this.manageNode=find('manageNode').getComponent(ManageGame1)
+
         Role.prototype.start.call(this)
         this.getTarget()
 
@@ -47,11 +51,9 @@ export class Villain extends Role {
                 if(target){
                     target.strike(this.damage)
                     this.colliderMap.set(coll2,()=>target.strike(this.damage))
-                    this.schedule( this.colliderMap.get(coll2),0.5)
+                    this.schedule(this.colliderMap.get(coll2),0.5)
                 }
             }
-
-
         })
 
         this.collider.on(Contact2DType.END_CONTACT,(coll1:Collider2D,coll2:Collider2D)=>{

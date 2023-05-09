@@ -1,4 +1,19 @@
-import {PhysicsSystem2D} from 'cc'
+import {PhysicsSystem2D,find,Node} from 'cc'
+
+
+const m=new Map<string,Node>()
+/**封装find方法,对结果进行缓存 */
+export function myFind(t:string){
+  if(m.has(t)&&m.get(t).isValid){
+    return m.get(t)
+  }else{
+    const n=find(t)
+    m.set(t,n)
+    n?.once(Node.EventType.NODE_DESTROYED,()=>m.delete(t))
+    return n
+  }
+  
+}
 
 /**角色动画列表序号 */
 export const directionIndex={

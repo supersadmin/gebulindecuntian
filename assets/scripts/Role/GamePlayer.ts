@@ -1,7 +1,7 @@
 import { _decorator, Node, Vec3, Camera,director, Prefab,instantiate,Sprite } from 'cc';
 import { Role } from './Role';
 import { Direction } from '../other/Direction';
-import { computedDirection, mapSize,directionIndex,physicsGroup } from '../other/getDirection';
+import { computedDirection, mapSize,directionIndex,physicsGroup, myFind } from '../other/getDirection';
 import { ManageGame1 } from '../manage/ManageGame1';
 import { Attack } from '../attack/Attack';
 
@@ -12,7 +12,6 @@ const { ccclass, property } = _decorator;
 export class GamePlayer extends Role {
 
     /**统一管理节点以预制体等资源的组件 */
-    @property({ type: ManageGame1 })
     manageNode: ManageGame1 = null
 
     /**角色攻击朝向 */
@@ -49,6 +48,7 @@ export class GamePlayer extends Role {
     bulletLayer:Node=null
 
     start() {
+        this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
         this.bulletLayer=this.manageNode.bulletLayer
         this.zidan1=this.manageNode.zidan1
         this.camera = this.manageNode.camera
