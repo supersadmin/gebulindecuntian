@@ -16,6 +16,7 @@ export class SortNodeLayer extends Component {
             return
         }
         const childList = this.node.children
+        // console.log(childList.length)
         const t = [...childList]
         t.sort((a, b) => (b.position.y - b.getComponent(UITransform)?.height / 2) - (a.position.y - a.getComponent(UITransform)?.height / 2))
         t.forEach((item, i) => item.setSiblingIndex(i))

@@ -1,4 +1,4 @@
-import { _decorator, Node, Vec3, Camera,director, Prefab,instantiate,Sprite } from 'cc';
+import { _decorator, Node, Vec3, Camera,resources, Prefab,instantiate,Sprite } from 'cc';
 import { Role } from './Role';
 import { Direction } from '../other/Direction';
 import { computedDirection, mapSize,directionIndex,physicsGroup, myFind } from '../other/getDirection';
@@ -6,6 +6,7 @@ import { ManageGame1 } from '../manage/ManageGame1';
 import { Attack } from '../attack/Attack';
 
 const { ccclass, property } = _decorator;
+
 
 /**受玩家控制的角色应该继承此类 */
 @ccclass('GamePlayer')
@@ -47,15 +48,17 @@ export class GamePlayer extends Role {
     /**放置子弹的层级 */
     bulletLayer:Node=null
 
-    start() {
+    afterStart() {
+        this.damage=13
+        this.hp=1000
+
+        this.zidan1=resources.get('prefab/zidan1',Prefab)
+
         this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
         this.bulletLayer=this.manageNode.bulletLayer
-        this.zidan1=this.manageNode.zidan1
         this.camera = this.manageNode.camera
         this.moveDirectionNode = this.manageNode.moveDirectionNode
         this.attackDirectionNode = this.manageNode.attackDirectionNode
-
-        Role.prototype.start.call(this)
 
         this.clearDirection = this.antiShake(() => this.attackDirection = null, 0.4)
         this.moveScript = this.moveDirectionNode.getComponent(Direction)
@@ -63,7 +66,6 @@ export class GamePlayer extends Role {
         
         this.startAttack()
         this.setCamera()
-
         this.manageNode.gamePlayerSet.add(this.node)
 
     }
@@ -163,12 +165,6 @@ export class GamePlayer extends Role {
         const d = this.attackDirection || this.moveDirection
         if (d === null) { return }
         this.node.getComponent(Sprite).spriteFrame = this.spriteAtlas.spriteFrames[this.beforeName + '_' + directionIndex[d][n]]
-    }
-
-    /**角色死亡函数 */
-    death() {
-        Role.prototype.death.call(this)
-        this.manageNode.gamePlayerSet.delete(this.node)
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component, _decorator, Sprite, Node,SpriteAtlas, Vec3, Animation } from "cc"
+import { Component, _decorator, Sprite, Node,SpriteAtlas, Vec3, Animation,Tween } from "cc"
 import { directionIndex, computedDirection, getSpriteName } from "../other/getDirection"
 
 /**
@@ -101,13 +101,29 @@ export class Role extends Component {
 
   /**设置自身的动画组件,sprite组件以及图集列表 */
   start() {
-
+    this.brforeStart()
     this.spriteAtlas = this.node.getComponent(Sprite).spriteAtlas
     this.animation = this.node.getComponent(Animation)
     this.sprite = this.node.getComponent(Sprite)
     this.beforeName = getSpriteName(this.sprite.spriteFrame.name)
+    this.afterStart()
 
+    this.bornFn()
   }
+
+  /**节点创建的动画,这里用缓动系统执行 */
+  bornFn(){
+    this.node.scale=new Vec3(0,0)
+    new Tween(this.node).to(0.2,{
+      scale:new Vec3(1,1,0)
+    }).start()
+  }
+
+  /**start函数执行之前执行的逻辑 */
+  brforeStart(){ }
+
+  /**start函数执行之后执行的逻辑 */
+  afterStart(){ }
 
   /**受到伤害之前执行的函数列表 */
   onBeforeStrikeFn=new Set<(n:number)=>number>()
@@ -136,7 +152,12 @@ export class Role extends Component {
 
   /**角色死亡函数 */
   death() {
-    this.unmount()
+    new Tween(this.node).to(0.1,{
+      scale:new Vec3(0,0,0)
+    })
+    .call(()=>this.unmount())
+    .start()
+
   }
 
   /**监听角色节点销毁函数的集合 */
@@ -157,7 +178,7 @@ export class Role extends Component {
     const x = sp.x - tp.x
     const y = sp.y - tp.y
     const k = Math.sqrt(x * x + y * y)
-    if (k < 10) {
+    if (k < 40) {
       return
     }
     const len = this.speed * dt
@@ -167,7 +188,7 @@ export class Role extends Component {
     this.moveDirection = computedDirection(-1 * x1, -1 * y1)
   }
 
-  /**事件帧执行函数 */
+  /**移动动画事件帧执行函数 */
   frameEvent(n: number) {
     const d = this.moveDirection
     if (d === null) { return }

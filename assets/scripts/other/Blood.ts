@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, instantiate, BoxCollider2D, CircleCollider2D, Vec3, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Component, Node, Prefab, resources, instantiate, BoxCollider2D, CircleCollider2D, Vec3, Sprite, SpriteFrame, UITransform } from 'cc';
 import { ManageGame1 } from '../manage/ManageGame1';
 import { Role } from '../Role/Role';
 import { myFind } from './getDirection';
@@ -30,8 +30,9 @@ export class Blood extends Component {
     contextSpriteFrame: SpriteFrame = null
 
     start() {
-        this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
-        this.bloodPrefab = this.manageNode.bloodPrefab
+        this.manageNode = myFind('manageNode')?.getComponent(ManageGame1)
+
+        this.bloodPrefab = resources.get('prefab/bloodBox', Prefab)
         const node = instantiate(this.bloodPrefab)
         this.init(node)
 
@@ -40,17 +41,20 @@ export class Blood extends Component {
 
     }
 
-    init(node:Node){
+    init(node: Node) {
+
+        this.scale = this.getComponent(UITransform).width / node.getComponent(UITransform).width
+
         this.bloodChild = node.getChildByName('bloodContext')
         node.scale = new Vec3(this.scale, this.scale)
         const offsetY = this.computedOffsetY(this.node)
         node.setPosition(new Vec3(0, offsetY))
         this.node.addChild(node)
-        if(this.boxSpriteFrame){
-            node.getComponent(Sprite).spriteFrame=this.boxSpriteFrame
+        if (this.boxSpriteFrame) {
+            node.getComponent(Sprite).spriteFrame = this.boxSpriteFrame
         }
-        if(this.contextSpriteFrame){
-            node.getComponentInChildren(Sprite).spriteFrame=this.contextSpriteFrame
+        if (this.contextSpriteFrame) {
+            node.getComponentInChildren(Sprite).spriteFrame = this.contextSpriteFrame
         }
     }
 
@@ -72,6 +76,7 @@ export class Blood extends Component {
             const hp = role.hp
             let scale = hp / maxHp
             scale = scale > 1 ? 1 : scale
+            scale = scale < 0 ? 0 : scale
             this.bloodChild.scale = new Vec3(scale, 1)
         })
     }

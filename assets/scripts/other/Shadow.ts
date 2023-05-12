@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab,instantiate, UITransform, Vec3,BoxCollider2D } from 'cc';
+import { _decorator, Component, Node, Prefab,instantiate, UITransform, Vec3,BoxCollider2D, resources } from 'cc';
 import { ManageGame1 } from '../manage/ManageGame1';
 import { myFind } from './getDirection';
 
@@ -30,7 +30,7 @@ export class Shadow extends Component {
 
     start() {
         this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
-        this.shadowPrefab=this.manageNode.shadowPrefab
+        this.shadowPrefab=resources.get('prefab/shadowRole',Prefab)
         this.shadowLayer=this.manageNode.shadowLayer
 
         this.shadowNode=instantiate(this.shadowPrefab)

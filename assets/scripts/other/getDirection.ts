@@ -6,13 +6,11 @@ const m=new Map<string,Node>()
 export function myFind(t:string){
   if(m.has(t)&&m.get(t).isValid){
     return m.get(t)
-  }else{
-    const n=find(t)
-    m.set(t,n)
-    n?.once(Node.EventType.NODE_DESTROYED,()=>m.delete(t))
-    return n
   }
-  
+  const n=find(t)
+  m.set(t,n)
+  n?.once(Node.EventType.NODE_DESTROYED,()=>m.delete(t))
+  return n
 }
 
 /**角色动画列表序号 */
@@ -64,8 +62,8 @@ export function throttleBox(fn:Function,time:number){
 
 /**地图大小 */
 function mapSizeComputed() {
-  const width = 6000
-  const height = 4000
+  const width = 4000
+  const height = 2000
   return {
     width,
     height,

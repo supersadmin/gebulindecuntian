@@ -2,7 +2,7 @@
   "ver": "1.0.25",
   "importer": "image",
   "imported": true,
-  "uuid": "b5840900-435a-4f75-ae12-f2b8353fd0b0",
+  "uuid": "c0577470-91be-4ac4-92c8-5c760a05c341",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "b5840900-435a-4f75-ae12-f2b8353fd0b0@6c48a",
+      "uuid": "c0577470-91be-4ac4-92c8-5c760a05c341@6c48a",
       "displayName": "greenery_6",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "b5840900-435a-4f75-ae12-f2b8353fd0b0",
+        "imageUuidOrDatabaseUri": "c0577470-91be-4ac4-92c8-5c760a05c341",
         "isUuid": true,
         "visible": false,
         "minfilter": "linear",
@@ -34,7 +34,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "b5840900-435a-4f75-ae12-f2b8353fd0b0@f9941",
+      "uuid": "c0577470-91be-4ac4-92c8-5c760a05c341@f9941",
       "displayName": "greenery_6",
       "id": "f9941",
       "name": "spriteFrame",
@@ -114,7 +114,7 @@
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "b5840900-435a-4f75-ae12-f2b8353fd0b0@6c48a",
+        "imageUuidOrDatabaseUri": "c0577470-91be-4ac4-92c8-5c760a05c341@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.11",
@@ -129,6 +129,6 @@
     "type": "sprite-frame",
     "fixAlphaTransparencyArtifacts": true,
     "hasAlpha": true,
-    "redirect": "b5840900-435a-4f75-ae12-f2b8353fd0b0@f9941"
+    "redirect": "c0577470-91be-4ac4-92c8-5c760a05c341@f9941"
   }
 }

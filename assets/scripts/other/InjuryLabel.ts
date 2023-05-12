@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, Node,instantiate, Prefab, Label,Tween, Vec3, UITransform } from 'cc';
+import { _decorator, Color, Component, Node,instantiate, Prefab, Label,Tween, Vec3, UITransform, resources } from 'cc';
 import { Role } from '../Role/Role';
 import { myFind } from './getDirection';
 import { ManageGame1 } from '../manage/ManageGame1';
@@ -30,7 +30,7 @@ export class InjuryLabel extends Component {
 
     start() {
         this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
-        this.injuryPrefab=this.manageNode.injuryPrefab
+        this.injuryPrefab=resources.get('prefab/injuryLabel')
         this.injuryLayer=this.manageNode.injuryLayer
 
         const role=this.getComponent(Role)
