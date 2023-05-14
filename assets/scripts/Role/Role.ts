@@ -1,17 +1,20 @@
-import { Component, _decorator, Sprite, Node,SpriteAtlas, Vec3, Animation,Tween } from "cc"
+import { Component, _decorator, Sprite, Node,SpriteAtlas, Vec3, Animation,Tween, Prefab } from "cc"
 import { directionIndex, computedDirection, getSpriteName } from "../other/getDirection"
 
 /**
  * @param hp 当前血量
  * @param newHp 要变化到的血量
  */
-type fn1=(hp?:number,newHp?:number)=>void
+type fn1=(hp?:number,newHp?:number)=>number
 
 /**
  * @param hp 当前血量
  * @param oldHp 变化之前的血量
  */
 type fn2=(hp?:number,oldHp?:number)=>void
+
+/** */
+type fn3=(val:number)=>number
 
 const { property } = _decorator;
 
@@ -22,10 +25,14 @@ const { property } = _decorator;
  */
 export class Role extends Component {
 
+  /**监听获取速度属性的函数 */
+  onGetSpeedFn=new Set<fn3>()
   private _speed: number=280
   /**移动速度 */
   get speed() {
-    return this._speed
+    let val=this._speed
+    this.onGetSpeedFn.forEach(item=>val=item(val))
+    return val
   }
   set speed(val: number) {
     this._speed = val
@@ -51,7 +58,7 @@ export class Role extends Component {
     return this._hp
   }
   set hp(val: number) {
-    this.onHpChangeBeforeFn.forEach(item=>item(this.hp,val))
+    this.onHpChangeBeforeFn.forEach(item=>val=item(this.hp,val))
     const oldHp=this.hp
     this._hp = val
     this.onHpChangeAfterFn.forEach(item=>item(this.hp,oldHp))
@@ -75,10 +82,13 @@ export class Role extends Component {
     this._ai = val
   }
 
+  onGetDamageFn=new Set<fn3>()
   private _damage: number=5
   /**攻击力 */
   get damage() {
-    return this._damage
+    let val=this._damage
+    this.onGetDamageFn.forEach(item=>val=item(val))
+    return val
   }
   set damage(val: number) {
     this._damage = val
@@ -102,6 +112,7 @@ export class Role extends Component {
   /**设置自身的动画组件,sprite组件以及图集列表 */
   start() {
     this.brforeStart()
+    
     this.spriteAtlas = this.node.getComponent(Sprite).spriteAtlas
     this.animation = this.node.getComponent(Animation)
     this.sprite = this.node.getComponent(Sprite)
@@ -157,7 +168,6 @@ export class Role extends Component {
     })
     .call(()=>this.unmount())
     .start()
-
   }
 
   /**监听角色节点销毁函数的集合 */
@@ -168,13 +178,16 @@ export class Role extends Component {
     this.node.destroy()
   }
 
+  /**进行攻击执行的逻辑 */
+  attack(attackDirection:Vec3,attackPrefab:Prefab){}
+
   /**角色移动 */
-  move(dt: number,target:Node) {
+  move(dt: number,target?:Node) {
     if (target === null) {
       return
     }
-    const sp = this.node.position
-    const tp = target.position
+    const sp = this.node.getPosition()
+    const tp = target.getPosition()
     const x = sp.x - tp.x
     const y = sp.y - tp.y
     const k = Math.sqrt(x * x + y * y)
@@ -187,6 +200,9 @@ export class Role extends Component {
     this.node.setPosition(sp.subtract(new Vec3(x1, y1)))
     this.moveDirection = computedDirection(-1 * x1, -1 * y1)
   }
+
+  /**调用相机跟随,怪物节点谨慎调用 */
+  setCamera?(){}
 
   /**移动动画事件帧执行函数 */
   frameEvent(n: number) {

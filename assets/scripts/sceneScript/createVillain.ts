@@ -21,7 +21,7 @@ export class CreateVillain extends Component {
 
         this.schedule(()=>{
             this.createVillain(randomArray(this.villainPrefabList),this.manageNode.getRandomGamePlayer()?.getPosition())
-        },0.6)
+        },0.2)
 
     }
 
@@ -42,7 +42,7 @@ export class CreateVillain extends Component {
             d.setPosition(p)
             this.node.addChild(d)
         }else{
-            console.log('--创建怪物的参数错误--',t,position)
+            /**参数错误执行逻辑 */
         }
 
     }

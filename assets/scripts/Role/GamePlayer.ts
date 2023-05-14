@@ -1,9 +1,15 @@
-import { _decorator, Node, Vec3, Camera,resources, Prefab,instantiate,Sprite } from 'cc';
+import { _decorator, Node, Vec3, Camera,resources, Prefab,instantiate,Sprite, find, SpriteFrame } from 'cc';
 import { Role } from './Role';
 import { Direction } from '../other/Direction';
 import { computedDirection, mapSize,directionIndex,physicsGroup, myFind } from '../other/getDirection';
 import { ManageGame1 } from '../manage/ManageGame1';
 import { Attack } from '../attack/Attack';
+import { Strengthen } from '../skill/Strengthen';
+import { SkillIndicator } from '../skill/SkillIndicator';
+import { Teleport } from '../skill/Teleport';
+import { Skill } from '../skill/Skill';
+import { ImpactBomb } from '../attack/ImpactBomb';
+import { ImpactBombSkill } from '../skill/ImpactBombSkill';
 
 const { ccclass, property } = _decorator;
 
@@ -19,7 +25,7 @@ export class GamePlayer extends Role {
     attackDirection: string = null
 
     /**清除攻击朝向的函数
-     * 角色往左走但是又在攻击右边的角色时
+     * 比如角色往左走但是又在攻击右边的角色时
      * 此时的角色应该面朝右边
      */
     clearDirection: Function = null
@@ -48,11 +54,14 @@ export class GamePlayer extends Role {
     /**放置子弹的层级 */
     bulletLayer:Node=null
 
-    afterStart() {
-        this.damage=13
-        this.hp=1000
+    /**技能列表 */
+    skillList=[Strengthen,Teleport,ImpactBombSkill]
 
-        this.zidan1=resources.get('prefab/zidan1',Prefab)
+    afterStart() {
+        this.damage=18
+        this.hp=200
+
+        this.zidan1=Attack.getAttackPrefab()
 
         this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
         this.bulletLayer=this.manageNode.bulletLayer
@@ -68,6 +77,20 @@ export class GamePlayer extends Role {
         this.setCamera()
         this.manageNode.gamePlayerSet.add(this.node)
 
+        /**后续节点可能尚未生成,放到下一帧执行 */
+        this.scheduleOnce(()=>{
+            this.pairSkill(this.manageNode.skill1Node,this.skillList[0])
+            this.pairSkill(this.manageNode.skill2Node,this.skillList[1])
+            this.pairSkill(this.manageNode.skill3Node,this.skillList[2])
+        },0)
+    }
+
+    /**为技能指示器节点添加技能对象 */
+    pairSkill(skillNode:Node,skill:typeof Skill){
+        skillNode.getComponent(Sprite).spriteFrame=resources.get(skill.spriteFramePath)
+        const skillIndicator=skillNode.getComponent(SkillIndicator)
+        skillIndicator.skill=skill        
+        skillIndicator.role=this
     }
 
     update(deltaTime: number) {
@@ -79,7 +102,7 @@ export class GamePlayer extends Role {
         } else {
             if (this.animation.getState('move').isPlaying) {
                 this.animation.stop()
-                this.frameEvent(1)
+                this.frameEvent(this._n)
             }
         }
     }
@@ -88,10 +111,22 @@ export class GamePlayer extends Role {
      * @param time 单位为秒
     */
     antiShake(fn: Function, time: number) {
-        let timeEnd = null
+        let f:Function
         return () => {
-            clearTimeout(timeEnd)
-            timeEnd = setTimeout(fn, time * 1000)
+            this.unschedule(f)
+            this.scheduleOnce(f=()=>fn(), time)
+        }
+    }
+
+    /**为函数添加节流 */
+    throttle(fn:Function,time:number){
+        let t=false
+        return (...argu)=>{
+            if(t===false){
+                fn(...argu)
+                t=true
+                this.scheduleOnce(()=>t=false,time)
+            }
         }
     }
 
@@ -147,7 +182,6 @@ export class GamePlayer extends Role {
         const d = instantiate(attackPrefab)
         const zd = d.getComponent(Attack)
         const dir = attackDirection
-
         /**为子弹添加随机偏移 */
         dir.x = dir.x * rnBox(this.moveScript.level)
         dir.y = dir.y * rnBox(this.moveScript.level)
@@ -156,12 +190,14 @@ export class GamePlayer extends Role {
         zd.init(dir,this.node.worldPosition,physicsGroup.juesezidan,this.damage)
 
         this.attackDirection = computedDirection(dir.x, dir.y)
-        this.frameEvent(1)
+        this.frameEvent(this._n)
         this.clearDirection()
         this.attackInterval = zd.attackInterval * (this.moveScript.level || 1)
     }
 
+    _n=0
     frameEvent(n: number) {
+        this._n=n
         const d = this.attackDirection || this.moveDirection
         if (d === null) { return }
         this.node.getComponent(Sprite).spriteFrame = this.spriteAtlas.spriteFrames[this.beforeName + '_' + directionIndex[d][n]]

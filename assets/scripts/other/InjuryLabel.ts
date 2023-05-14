@@ -32,7 +32,6 @@ export class InjuryLabel extends Component {
         this.manageNode=myFind('manageNode')?.getComponent(ManageGame1)
         this.injuryPrefab=resources.get('prefab/injuryLabel')
         this.injuryLayer=this.manageNode.injuryLayer
-
         const role=this.getComponent(Role)
         role.onHpChangeAfterFn.add((hp,oldHp)=>this.changeHp(hp-oldHp))
     }
@@ -46,7 +45,7 @@ export class InjuryLabel extends Component {
      */
     changeHp(val:number){
 
-        let node=injuryStack.length===0?instantiate(this.injuryPrefab):injuryStack.pop()
+        let node=injuryStack.pop()||instantiate(this.injuryPrefab)
         
         const label=node.getComponent(Label)
         label.color=val>0?this.treatmentColor:this.injuryColor
@@ -56,9 +55,9 @@ export class InjuryLabel extends Component {
         const trans=this.getComponent(UITransform)
         node.setWorldPosition(new Vec3(p.x,p.y+trans.height/2))
 
-        new Tween(node)
-        .by(0.4,{position:new Vec3(0,50)})
-        .call(()=>{
+        new Tween(node).by(0.4,{
+            position:new Vec3(0,50)
+        }).call(()=>{
             if(this.isValid){
                 this.injuryLayer.removeChild(node)
                 injuryStack.push(node)

@@ -1,15 +1,19 @@
-import { _decorator, Component, Node, Vec3, director, Collider2D, AudioSource, AudioClip, UITransform, Contact2DType, BoxCollider2D, PhysicsSystem2D, resources } from 'cc';
+import { _decorator, Component, Node, Vec3, director, Collider2D, AudioSource, AudioClip, UITransform, Contact2DType, BoxCollider2D, PhysicsSystem2D, resources, Prefab } from 'cc';
 import { Role } from '../Role/Role';
 import { physicsGroup } from '../other/getDirection';
 const { ccclass, property } = _decorator;
 
 /**音频播放对象池 */
-const audioSourcePool:AudioSource[]=[]
+const audioSourcePool: AudioSource[] = []
 
 /**子弹类,场景上的飞行物 */
 @ccclass('Attack')
 export class Attack extends Component {
 
+    /**子弹预制体 */
+    static getAttackPrefab:(()=>Prefab) =()=>resources.get('prefab/zidan1',Prefab)
+
+    /**子弹飞行速度 */
     _speed: number = 1800
     /**子弹飞行速度 */
     get speed() {
@@ -19,6 +23,7 @@ export class Attack extends Component {
         this._speed = val
     }
 
+    /**子弹伤害 */
     _damage: number = 5
     /**子弹伤害 */
     get damage() {
@@ -28,6 +33,7 @@ export class Attack extends Component {
         this._damage = val
     }
 
+    /**子弹飞行方向 */
     _moveDirection: Vec3 = new Vec3(1, 1)
     /**子弹飞行方向 */
     get moveDirection() {
@@ -37,6 +43,7 @@ export class Attack extends Component {
         this._moveDirection = val
     }
 
+    /**子弹最长存在时间,单位为秒 */
     _lifeTime: number = 3
     /**子弹最长存在时间,单位为秒 */
     get lifeTime() {
@@ -45,8 +52,8 @@ export class Attack extends Component {
     set lifeTime(val: number) {
         this._lifeTime = val
     }
-
-    _attackInterval = 20
+    /**攻击间隔 单位ms*/
+    _attackInterval = 40
     /**攻击间隔 单位ms*/
     get attackInterval() {
         return this._attackInterval
@@ -60,11 +67,11 @@ export class Attack extends Component {
     /**定时销毁子弹节点的定时器 */
     timeoutFn: Function = null
     /**子弹创建时播放的音频 */
-    createAudioClip: AudioClip = resources.get('audio/attack/zidan1Create',AudioClip)
+    createAudioClip: AudioClip = resources.get('audio/attack/zidan1Create', AudioClip)
     /**子弹移动时播放的音频 */
     moveAudioClip: AudioClip = null
     /**子弹命中时播放的音频 */
-    attackAudioClip: AudioClip = resources.get('audio/attack/zidan1Attack',AudioClip)
+    attackAudioClip: AudioClip = resources.get('audio/attack/zidan1Attack', AudioClip)
     /**子弹销毁时播放的音频 */
     destoryAudioClip: AudioClip = null
     /**对撞机组件 */
@@ -129,7 +136,7 @@ export class Attack extends Component {
     /**开始监听碰撞 */
     listenCollider() {
         this.collider.on(Contact2DType.BEGIN_CONTACT, (coll1: Collider2D, coll2: Collider2D) => {
-            if (physicsGroup.guaiwu===coll2.group) {
+            if (physicsGroup.guaiwu === coll2.group) {
                 const target = coll2.getComponent(Role)
                 if (target) {
                     this.playAudio('attackAudioClip')
@@ -150,14 +157,14 @@ export class Attack extends Component {
     /**播放音频 */
     playAudio(n: 'destoryAudioClip' | 'attackAudioClip' | 'moveAudioClip' | 'createAudioClip') {
         if (this[n] === null) { return }
-        const audioSource = audioSourcePool.pop()||new AudioSource()
+        const audioSource = audioSourcePool.pop() || new AudioSource()
         audioSource.clip = this[n]
         audioSource.play()
-        this.schedule(()=>{
-            if(!audioSource.playing){
+        this.schedule(() => {
+            if (!audioSource.playing) {
                 audioSourcePool.push(audioSource)
             }
-        },audioSource.duration+0.1)
+        }, audioSource.duration + 0.1)
     }
 
 }

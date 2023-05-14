@@ -6,15 +6,15 @@ const { ccclass, property } = _decorator;
 export class ManageGame1 extends Component {
 
     /**玩家角色列表 */
-    gamePlayerSet=new Set<Node>()
-    
+    gamePlayerSet = new Set<Node>()
+
     /**随机获取一名玩家 */
-    getRandomGamePlayer():Node{
-        const i=Math.floor(this.gamePlayerSet.size*Math.random())
-        const t=[...this.gamePlayerSet][i]||null
-        if(t===null||t.isValid){
+    getRandomGamePlayer(): Node {
+        const i = Math.floor(this.gamePlayerSet.size * Math.random())
+        const t = [...this.gamePlayerSet][i] || null
+        if (t === null || t.isValid) {
             return t
-        }else{
+        } else {
             this.gamePlayerSet.delete(t)
             return this.getRandomGamePlayer()
         }
@@ -34,18 +34,30 @@ export class ManageGame1 extends Component {
     camera: Camera = null
 
     /**放置子弹的层级(父节点) */
-    @property({type:Node})
-    bulletLayer:Node=null
+    @property({ type: Node })
+    bulletLayer: Node = null
 
     /**放置阴影的节点 */
-    @property({type:Node})
-    shadowLayer:Node=null
+    @property({ type: Node })
+    shadowLayer: Node = null
 
     /**显示文本伤害的层(节点) */
+    @property({ type: Node })
+    injuryLayer: Node = null
+
+    /**显示技能释放指示器的节点 */
     @property({type:Node})
-    injuryLayer:Node=null
+    skillIndicatorLayer:Node=null
 
-
+    /**技能节点 */
+    @property({ type: Node })
+    skill1Node: Node = null
+    @property({ type: Node })
+    skill2Node: Node = null
+    @property({ type: Node })
+    skill3Node: Node = null
+    @property({ type: Node })
+    skill4Node: Node = null
 }
 
 

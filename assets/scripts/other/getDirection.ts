@@ -4,7 +4,7 @@ import {PhysicsSystem2D,find,Node} from 'cc'
 const m=new Map<string,Node>()
 /**封装find方法,对结果进行缓存 */
 export function myFind(t:string){
-  if(m.has(t)&&m.get(t).isValid){
+  if(m.get(t)&&m.get(t).isValid){
     return m.get(t)
   }
   const n=find(t)

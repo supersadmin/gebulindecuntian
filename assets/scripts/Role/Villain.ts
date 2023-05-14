@@ -1,8 +1,8 @@
-import { _decorator, Collider2D, Component, Contact2DType, Node, PhysicsSystem2D, Tween, find, BoxCollider2D, Vec3 } from 'cc';
+import { _decorator, Collider2D, Rect, Contact2DType, Node, PhysicsSystem2D, Tween, find, BoxCollider2D, Vec3 } from 'cc';
 import { Role } from './Role';
 import { GamePlayer } from './GamePlayer';
 import { ManageGame1 } from '../manage/ManageGame1';
-import { physicsGroup } from '../other/getDirection';
+import { computedDirection, physicsGroup } from '../other/getDirection';
 
 const { ccclass, property } = _decorator;
 
@@ -110,9 +110,42 @@ export class Villain extends Role {
         })
     }
 
+    /**角色移动 */
+    move(dt: number,target:Node) {
+        if (target === null) {
+          return
+        }
+        const sp = this.node.getPosition()
+        const tp = target.getPosition()
+        const x = sp.x - tp.x
+        const y = sp.y - tp.y
+        const k = Math.sqrt(x * x + y * y)
+        if (k < 40) {
+          return
+        }
+        const len = this.speed * dt
+        const x1 = x * len / k
+        const y1 = y * len / k
+        this.node.setPosition(sp.subtract(new Vec3(x1, y1)))
+        this.moveDirection = computedDirection(-1 * x1, -1 * y1)
 
+        /**用点检测解决怪物折叠问题 */
+        // PhysicsSystem2D.instance.testPoint()
+
+
+      }
 
 }
+
+
+
+
+
+
+
+
+
+
 
     // /**每几帧处理一次怪物碰撞折叠 */
     // markRefuseColliderPosition=true
