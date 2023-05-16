@@ -6,12 +6,14 @@ import { computedDirection, physicsGroup } from '../other/getDirection';
 
 const { ccclass, property } = _decorator;
 
-/**是否监听怪物与怪物的碰撞 */
+/**是否监听怪物与怪物的碰撞,设置这个值只是为了方便调试,怪物互斥(解决怪物重叠)可能会消耗很多性能 */
 const listenColliderVillain=true
 
 /**怪物类基类 */
 @ccclass('Villain')
 export class Villain extends Role {
+
+    static onVillainUnmountFn=new Set<(villain:Villain)=>void>()
 
     /**统一管理节点与预制体等资源的组件 */
     manageNode: ManageGame1 = null
@@ -131,9 +133,12 @@ export class Villain extends Role {
 
         /**用点检测解决怪物折叠问题 */
         // PhysicsSystem2D.instance.testPoint()
+    }
 
-
-      }
+    unmount(): void {
+        Villain.onVillainUnmountFn.forEach(item=>item(this))
+        Role.prototype.unmount.call(this)
+    }
 
 }
 

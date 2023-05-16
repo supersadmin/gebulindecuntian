@@ -1,4 +1,6 @@
 import { _decorator, Camera, Component, Node, Prefab } from 'cc';
+import { Attack } from '../attack/Attack';
+import { Villain } from '../Role/Villain';
 const { ccclass, property } = _decorator;
 
 /**在此处对节点进行统一管理 */
@@ -11,12 +13,12 @@ export class ManageGame1 extends Component {
     /**随机获取一名玩家 */
     getRandomGamePlayer(): Node {
         const i = Math.floor(this.gamePlayerSet.size * Math.random())
-        const t = [...this.gamePlayerSet][i] || null
+        const t = Array.from(this.gamePlayerSet)[i] || null
         if (t === null || t.isValid) {
             return t
         } else {
             this.gamePlayerSet.delete(t)
-            return this.getRandomGamePlayer()
+            return null
         }
     }
 
@@ -58,6 +60,41 @@ export class ManageGame1 extends Component {
     skill3Node: Node = null
     @property({ type: Node })
     skill4Node: Node = null
+
+    /**监听friction变化的函数列表 */
+    onFrictionFn=new Set<(n:number)=>void>()
+    /**打怪获得的分数 */
+    _friction=0
+    /**打怪获得的分数 */
+    get friction(){
+        return this._friction
+    }
+    set friction(val:number){
+        this._friction=val
+        this.onFrictionFn.forEach(item=>item(this.friction))
+    }
+
+    /**监听kill变化的函数列表 */
+    onKillFn=new Set<(n:number)=>void>()
+    /**怪物击杀量 */
+    _kill=0
+    /**怪物击杀量 */
+    get kill(){
+        return this._kill
+    }
+    set kill(val:number){
+        this._kill=val
+        this.onKillFn.forEach(item=>item(this.kill))
+    }
+
+    protected start(): void {
+        Attack.onCauseDamageFn.add((d)=>{
+            this.friction+=d
+            return d
+        })
+        Villain.onVillainUnmountFn.add(()=>this.kill+=1)
+    }
+
 }
 
 

@@ -12,14 +12,16 @@ export class SortNodeLayer extends Component {
     _i=0
 
     update(deltaTime: number) {
+        // console.time('kk')
         if(++this._i%this.i!==0){
             return
         }
         const childList = this.node.children
-        // console.log(childList.length)
         const t = [...childList]
         t.sort((a, b) => (b.position.y - b.getComponent(UITransform)?.height / 2) - (a.position.y - a.getComponent(UITransform)?.height / 2))
         t.forEach((item, i) => item.setSiblingIndex(i))
+        // console.timeEnd('kk')
+        // console.log(childList.length)
     }
 }
 

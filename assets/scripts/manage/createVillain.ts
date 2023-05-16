@@ -1,7 +1,7 @@
 import { _decorator, Component, instantiate, Node,Prefab,resources, Vec3 } from 'cc';
 import { Villain } from '../Role/Villain';
 import { mapSize, myFind } from '../other/getDirection';
-import { ManageGame1 } from '../manage/ManageGame1';
+import { ManageGame1 } from './ManageGame1';
 const { ccclass, property } = _decorator;
 
 /**在数组中随机返回一个值 */
@@ -10,18 +10,17 @@ const randomArray=(t:any[])=>t[Math.floor(Math.random()*t.length)]
 /**在被附加的节点内部创建怪物节点 */
 @ccclass('CreateVillain')
 export class CreateVillain extends Component {
-    
+    /**能被创建的怪物预制体列表 */
     villainPrefabList:Prefab[]=[]
     manageNode:ManageGame1=null
 
     start() {
-        /**能被创建的怪物预制体列表 */
-        this.villainPrefabList=[resources.get('prefab/zizunv'),resources.get('prefab/sujin')]
+        this.villainPrefabList=[resources.get('prefab/gebulin2'),resources.get('prefab/gebulin1'),resources.get('prefab/zizunv'),resources.get('prefab/sujin')]
         this.manageNode=myFind('manageNode').getComponent(ManageGame1)
 
         this.schedule(()=>{
             this.createVillain(randomArray(this.villainPrefabList),this.manageNode.getRandomGamePlayer()?.getPosition())
-        },0.2)
+        },0.6)
 
     }
 
@@ -30,14 +29,15 @@ export class CreateVillain extends Component {
     }
 
     /**
-    * 创建怪物放置在地图上,位置在距离角色的一定范围内
+    * 创建怪物放置在地图上,
+    * 怪物的位置不应该距离角色过近
     * @param t 预制体对象
     * @param position 主角所处位置
     */
     createVillain(t: Prefab, position: Vec3) {
         if(t&&position){
             const d = instantiate(t)
-            const k = rn(position.x, position.y, 550, 80)
+            const k = rn(position.x, position.y, 650, 80)
             const p = new Vec3(...k)
             d.setPosition(p)
             this.node.addChild(d)

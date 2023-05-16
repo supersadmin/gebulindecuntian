@@ -1,16 +1,16 @@
 import { Role } from "../Role/Role";
 import { physicsGroup } from "../other/getDirection";
 import { Attack } from "./Attack";
-import { _decorator, Component, Node, Vec3, director, Collider2D, AudioSource, AudioClip, UITransform, Contact2DType, BoxCollider2D, PhysicsSystem2D, resources, Prefab } from 'cc';
+import { _decorator, Collider2D,  Contact2DType, resources, Prefab } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('ImpactBomb')
 export class ImpactBomb extends Attack {
   static getAttackPrefab: (() => Prefab) = () => resources.get('prefab/ImpactBomb', Prefab)
-  _attackInterval = 800
+  _attackInterval = 200
   _damage: number = 16
-  _speed: number = 300
-  _lifeTime: number = 6
+  _speed: number = 150
+  _lifeTime: number = 8
   attackAudioClip=null
   createAudioClip=null
 
@@ -19,7 +19,7 @@ export class ImpactBomb extends Attack {
 
   /**开始监听碰撞 */
   listenCollider() {
-    this.collider.on(Contact2DType.BEGIN_CONTACT, (coll1: Collider2D, coll2: Collider2D) => {
+    this.collider.on(Contact2DType.BEGIN_CONTACT, (_: Collider2D, coll2: Collider2D) => {
       if (physicsGroup.guaiwu === coll2.group) {
         const target = coll2.getComponent(Role)
         if (target) {
@@ -28,7 +28,7 @@ export class ImpactBomb extends Attack {
       }
     })
 
-    this.collider.on(Contact2DType.END_CONTACT, (coll1: Collider2D, coll2: Collider2D) => {
+    this.collider.on(Contact2DType.END_CONTACT, (_: Collider2D, coll2: Collider2D) => {
       if (physicsGroup.guaiwu === coll2.group) {
         const target = coll2.getComponent(Role)
         if (target) {
@@ -38,10 +38,9 @@ export class ImpactBomb extends Attack {
     })
 
     this.schedule(()=>{
-      this.colliderList.forEach(item=>item.strike(this.damage))
+      this.colliderList.forEach(item=>item.isValid&&this.causeDamage(item))
     },0.1)
 
   }
-
 
 }

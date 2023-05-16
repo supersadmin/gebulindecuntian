@@ -59,7 +59,7 @@ export class GamePlayer extends Role {
 
     afterStart() {
         this.damage=18
-        this.hp=200
+        this.hp=400
 
         this.zidan1=Attack.getAttackPrefab()
 

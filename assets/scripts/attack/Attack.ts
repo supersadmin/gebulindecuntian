@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3, director, Collider2D, AudioSource, AudioClip, UITransform, Contact2DType, BoxCollider2D, PhysicsSystem2D, resources, Prefab } from 'cc';
+import { _decorator, Component, Node, Vec3, Collider2D, AudioSource, AudioClip, UITransform, Contact2DType, BoxCollider2D, PhysicsSystem2D, resources, Prefab } from 'cc';
 import { Role } from '../Role/Role';
 import { physicsGroup } from '../other/getDirection';
 const { ccclass, property } = _decorator;
@@ -6,9 +6,15 @@ const { ccclass, property } = _decorator;
 /**音频播放对象池 */
 const audioSourcePool: AudioSource[] = []
 
+
 /**子弹类,场景上的飞行物 */
 @ccclass('Attack')
 export class Attack extends Component {
+
+    /**监听子弹造成伤害的函数,可以用来加分
+     * 当子弹类命中造成伤害之前会执行此集合里的函数函数
+     */
+    static onCauseDamageFn=new Set<(damage:number,t?:Attack)=>number>()
 
     /**子弹预制体 */
     static getAttackPrefab:(()=>Prefab) =()=>resources.get('prefab/zidan1',Prefab)
@@ -76,6 +82,10 @@ export class Attack extends Component {
     destoryAudioClip: AudioClip = null
     /**对撞机组件 */
     collider: Collider2D = null
+    /**子弹命中时执行的函数,这个函数实现类似吸血效果的逻辑
+     * @param strike 造成的伤害
+     */
+    hitFn:((strike:Number)=>void)=null
 
     /**初始化攻击
      * @param direction 飞行方向 
@@ -128,19 +138,24 @@ export class Attack extends Component {
         this.node.setWorldPosition(this.node.getWorldPosition().add(new Vec3(x, y)))
     }
 
-    /**子弹命中后进行加分操作,返回值为要加的分数 */
-    addFraction() {
-        return this.damage
+    /**对命中的目标造成伤害*/
+    causeDamage(target:Role) {
+        let d=this.damage
+        Attack.onCauseDamageFn.forEach(item=>d=item(d,this))
+        /**最终所造成的伤害 */
+        let t=target.strike(d)
+        this.hitFn&&this.hitFn(t)
+        return d 
     }
 
-    /**开始监听碰撞 */
+    /**监听碰撞(发生碰撞的逻辑) */
     listenCollider() {
         this.collider.on(Contact2DType.BEGIN_CONTACT, (coll1: Collider2D, coll2: Collider2D) => {
             if (physicsGroup.guaiwu === coll2.group) {
                 const target = coll2.getComponent(Role)
                 if (target) {
                     this.playAudio('attackAudioClip')
-                    target.strike(this.damage)
+                    this.causeDamage(target)
                     // this.node.destroy()
                 }
             }

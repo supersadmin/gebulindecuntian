@@ -1,5 +1,6 @@
 import {PhysicsSystem2D,find,Node} from 'cc'
 
+/**这个文件里面有很多别的方法,暂时先堆在这里,等以后有空在整理 */
 
 const m=new Map<string,Node>()
 /**封装find方法,对结果进行缓存 */
@@ -35,6 +36,8 @@ export const computedDirection=(x:number,y:number)=>{
 /**获取名称前缀 */
 export const getSpriteName = (t: string) => t.split('_')[0]
 
+
+/**这个函数应该没用了 */
 /**为函数添加节流功能并且添加一个参数dt,
  * dt为函数连续两次执行的间隔
  * @param fn 要封装的函数
