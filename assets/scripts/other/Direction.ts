@@ -52,7 +52,7 @@ const computedDeg = (x: number, y: number,radius:number,radius2:number) => {
     }else if(r<radius2){
         return [radius*x/r, radius*y/r,1]
     }else{
-        return [radius2*x/r, radius2*y/r,1.6]
+        return [radius2*x/r, radius2*y/r,1.4]
     }
 }
 

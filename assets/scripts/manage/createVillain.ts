@@ -20,7 +20,7 @@ export class CreateVillain extends Component {
 
         this.schedule(()=>{
             this.createVillain(randomArray(this.villainPrefabList),this.manageNode.getRandomGamePlayer()?.getPosition())
-        },0.6)
+        },0.4)
 
     }
 
@@ -65,11 +65,11 @@ function rn(x: number, y: number, startValue: number, offset: number): [number, 
     let newX = x + dx;
     let newY = y + dy;
 
-    if (Math.abs(newX) > mapSize.radiusX) {
-        newX = newX - 2 * dx
-    }
-    if (Math.abs(newY) > mapSize.radiusY) {
-        newY = newY - 2 * dy
-    }
+    // if (Math.abs(newX) > mapSize.radiusX) {
+    //     newX = newX - 2 * dx
+    // }
+    // if (Math.abs(newY) > mapSize.radiusY) {
+    //     newY = newY - 2 * dy
+    // }
     return [newX, newY]
 }

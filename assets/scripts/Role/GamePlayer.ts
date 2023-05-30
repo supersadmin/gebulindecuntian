@@ -1,4 +1,4 @@
-import { _decorator, Node, Vec3, Camera,resources, Prefab,instantiate,Sprite, find, SpriteFrame } from 'cc';
+import { _decorator, Node, Vec3, Camera,resources, Prefab,instantiate,Sprite, find, SpriteFrame, director } from 'cc';
 import { Role } from './Role';
 import { Direction } from '../other/Direction';
 import { computedDirection, mapSize,directionIndex,physicsGroup, myFind } from '../other/getDirection';
@@ -58,8 +58,10 @@ export class GamePlayer extends Role {
     skillList=[Strengthen,Teleport,ImpactBombSkill]
 
     afterStart() {
-        this.damage=18
-        this.hp=400
+        this.damage=31
+        this.speed=340
+        this.hp=200
+        this.maxHp=200
 
         this.zidan1=Attack.getAttackPrefab()
 
@@ -76,6 +78,8 @@ export class GamePlayer extends Role {
         this.startAttack()
         this.setCamera()
         this.manageNode.gamePlayerSet.add(this.node)
+
+        this.camera.orthoHeight=800
 
         /**后续节点可能尚未生成,放到下一帧执行 */
         this.scheduleOnce(()=>{
@@ -144,12 +148,6 @@ export class GamePlayer extends Role {
         const p = this.node.position
 
         let [x, y] = [p.x + offsetX, p.y + offsetY]
-        if (Math.abs(x) > mapSize.radiusX) {
-            x = x > 0 ? mapSize.radiusX : (-1 * mapSize.radiusX)
-        }
-        if (Math.abs(y) > mapSize.radiusY) {
-            y = y > 0 ? mapSize.radiusY : (-1 * mapSize.radiusY)
-        }
 
         this.node.setPosition(new Vec3(x, y, 0))
         this.setCamera()
@@ -164,14 +162,14 @@ export class GamePlayer extends Role {
     /**开始攻击 */
     startAttack() {
         this.schedule((dt: number) => {
-            /**dt为距离上一次执行说间隔的事件,单位为秒 */
+            /**dt为距离上一次执行所间隔的时间,单位为秒 */
             this.attackInterval -= (dt * 1000)
             if (this.attackInterval > 0|| !this.attackScript.touch ) {
                 return
             }
             const attackDirection=new Vec3(this.attackDirectionNode.position.x,this.attackDirectionNode.position.y)
             this.attack(attackDirection,this.zidan1)
-        }, 0.08)
+        }, 0.04)
     }
 
     /**进行攻击执行的逻辑
@@ -201,6 +199,11 @@ export class GamePlayer extends Role {
         const d = this.attackDirection || this.moveDirection
         if (d === null) { return }
         this.node.getComponent(Sprite).spriteFrame = this.spriteAtlas.spriteFrames[this.beforeName + '_' + directionIndex[d][n]]
+    }
+
+    unmount(): void {
+        Role.prototype.unmount.call(this)
+        director.loadScene('game-load')
     }
 
 }

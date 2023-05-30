@@ -14,10 +14,6 @@ export class GetFriction extends Component {
             label.string=String(Math.floor(n*10)/10)
         })
     }
-
-    update(deltaTime: number) {
-        
-    }
 }
 
 

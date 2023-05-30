@@ -14,10 +14,6 @@ export class GetKill extends Component {
             label.string=String(n)
         })
     }
-
-    update(deltaTime: number) {
-        
-    }
 }
 
 

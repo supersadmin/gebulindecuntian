@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Rect, Contact2DType, Node, PhysicsSystem2D, Tween, find, BoxCollider2D, Vec3 } from 'cc';
+import { _decorator, Collider2D, Rect, Contact2DType, Node, PhysicsSystem2D, Tween, find, BoxCollider2D, Vec3, Vec2 } from 'cc';
 import { Role } from './Role';
 import { GamePlayer } from './GamePlayer';
 import { ManageGame1 } from '../manage/ManageGame1';
@@ -132,7 +132,10 @@ export class Villain extends Role {
         this.moveDirection = computedDirection(-1 * x1, -1 * y1)
 
         /**用点检测解决怪物折叠问题 */
-        // PhysicsSystem2D.instance.testPoint()
+        // console.time('-----')
+        // const p=this.node.getWorldPosition()
+        // PhysicsSystem2D.instance.testPoint(new Vec2(p.x,p.y))
+        // console.timeEnd('-----')
     }
 
     unmount(): void {

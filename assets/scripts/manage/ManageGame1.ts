@@ -88,11 +88,23 @@ export class ManageGame1 extends Component {
     }
 
     protected start(): void {
-        Attack.onCauseDamageFn.add((d)=>{
+
+        let fn1=(d)=>{
             this.friction+=d
             return d
-        })
-        Villain.onVillainUnmountFn.add(()=>this.kill+=1)
+        }
+        Attack.onCauseDamageFn.add(fn1)
+        this.destroyFnList.push(()=>Attack.onCauseDamageFn.delete(fn1))
+
+        let fn2=()=>this.kill+=1
+        Villain.onVillainUnmountFn.add(fn2)
+        this.destroyFnList.push(()=>Villain.onVillainUnmountFn.delete(fn2))
+    }
+
+    /**对原型进行操作,当函数过期后应记得回收,避免产生bug */
+    destroyFnList=new Array<Function>()
+    protected onDestroy(): void {
+        this.destroyFnList.forEach(item=>item())
     }
 
 }

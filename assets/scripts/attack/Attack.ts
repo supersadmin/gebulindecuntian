@@ -30,7 +30,7 @@ export class Attack extends Component {
     }
 
     /**子弹伤害 */
-    _damage: number = 5
+    _damage: number = 13
     /**子弹伤害 */
     get damage() {
         return this._damage
@@ -59,7 +59,7 @@ export class Attack extends Component {
         this._lifeTime = val
     }
     /**攻击间隔 单位ms*/
-    _attackInterval = 40
+    _attackInterval = 70
     /**攻击间隔 单位ms*/
     get attackInterval() {
         return this._attackInterval
@@ -156,7 +156,7 @@ export class Attack extends Component {
                 if (target) {
                     this.playAudio('attackAudioClip')
                     this.causeDamage(target)
-                    // this.node.destroy()
+                    this.node.destroy()
                 }
             }
         })

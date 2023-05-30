@@ -45,7 +45,7 @@ export class Shadow extends Component {
 
         this.follow()
         /**角色节点被销毁则阴影节点也随之销毁 */
-        this.node.on(Node.EventType.NODE_DESTROYED,()=>this.shadowNode.destroy())
+        this.node.once(Node.EventType.NODE_DESTROYED,()=>this.shadowNode.isValid&&this.shadowNode.destroy())
     }
 
     update() {

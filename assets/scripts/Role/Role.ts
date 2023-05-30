@@ -83,7 +83,7 @@ export class Role extends Component {
   }
 
   onGetDamageFn=new Set<fn3>()
-  private _damage: number=5
+  private _damage: number=11
   /**攻击力 */
   get damage() {
     let val=this._damage
